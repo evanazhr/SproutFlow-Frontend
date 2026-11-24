@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import { authClient } from '../lib/auth-client'
+import { clearLiveTelemetry } from '../lib/liveTelemetry'
 import { disconnectMqtt } from '../lib/mqtt'
 import { clearPumpLiveState } from '../lib/pumpLive'
 import { env } from '../env'
@@ -41,6 +42,7 @@ export default function Header() {
     } finally {
       disconnectMqtt()
       clearPumpLiveState(env.VITE_DEVICE_ID)
+      clearLiveTelemetry(env.VITE_DEVICE_ID)
       queryClient.clear()
       await navigate({ to: '/login' })
       setSigningOut(false)

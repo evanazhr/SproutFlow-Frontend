@@ -22,6 +22,7 @@ import { usePumpControl } from '../hooks/usePumpControl'
 import { api } from '../lib/api'
 import type { PumpCommand } from '../lib/api'
 import { getSessionSafe } from '../lib/auth-client'
+import { useLiveTelemetry } from '../lib/liveTelemetry'
 import { usePumpLive } from '../lib/pumpLive'
 import { env } from '../env'
 
@@ -54,6 +55,7 @@ function DashboardPage() {
   const { isAdmin } = useAuth()
   const device = useDevice(deviceId)
   const { status, lastUpdated } = useMqttTelemetry(deviceId)
+  const liveTelemetry = useLiveTelemetry(deviceId)
   const livePump = usePumpLive(deviceId)
   const { send } = usePumpControl(deviceId)
   const [range, setRange] = useState<Range>('1h')
@@ -98,7 +100,8 @@ function DashboardPage() {
   )
 
   const data = device.data
-  const latest = data?.latest ?? null
+  // Bacaan MQTT lebih baru daripada REST; refetch DB tidak menimpanya.
+  const latest = liveTelemetry ?? data?.latest ?? null
   const offline = data ? !data.online : true
   // Perubahan status langsung tampil, tidak menunggu ack atau refetch REST.
   const pumpStatus: PumpCommand = livePump?.status ?? data?.pump_status ?? 'OFF'
