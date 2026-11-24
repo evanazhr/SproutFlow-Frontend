@@ -96,35 +96,32 @@ function DashboardPage() {
 
   const data = device.data
   const latest = data?.latest ?? null
-  const offline = data ? !data.online : false
+  const offline = data ? !data.online : true
+  const deviceError = device.isError ? (device.error instanceof Error ? device.error.message : 'Terjadi kesalahan.') : null
 
   return (
     <main className="page-wrap px-4 pb-16 pt-8">
-      {/* Strip instrumen: nama perangkat, status jaringan, update terakhir */}
       <div className="status-strip rise-in">
-        <span className="status-device">
-          {data?.name ?? deviceId}
+        <div className="status-device">
+          <div>
+            <p className="status-device-name">{data?.name ?? deviceId}</p>
+            <p className="status-device-sub">Pemantauan tanaman</p>
+          </div>
           <span className={`badge ${offline ? 'badge-off' : 'badge-on'}`}>
             <span className="badge-dot" aria-hidden="true" />
             {offline ? 'Offline' : 'Dalam jaringan'}
           </span>
-        </span>
+        </div>
         <ConnectionBadge status={status} lastUpdated={lastUpdated} />
       </div>
 
-      {device.isError ? (
-        <section className="island-shell panel-pad error-panel" role="alert">
-          <h1 className="panel-title">Data perangkat tidak bisa dimuat</h1>
-          <p className="panel-desc">
-            {device.error instanceof Error ? device.error.message : 'Terjadi kesalahan.'} Pastikan
-            backend berjalan dan perangkat sudah terdaftar.
-          </p>
-          <button type="button" className="btn btn-primary" onClick={() => void device.refetch()}>
-            Coba lagi
-          </button>
-        </section>
-      ) : (
-        <>
+      {deviceError ? (
+        <div className="inline-notice rise-in" role="status">
+          <span>Perangkat belum terhubung. {deviceError}</span>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={() => void device.refetch()}>Coba lagi</button>
+        </div>
+      ) : null}
+
           <section className="dash-grid rise-in">
             <div className="island-shell panel-pad gauge-panel">
               <div className="panel-head">
@@ -143,23 +140,26 @@ function DashboardPage() {
             </div>
 
             <div className="dash-side">
-              <SensorCard
-                icon={<Thermometer size={20} strokeWidth={2.2} />}
-                label="Suhu udara"
-                value={latest ? fmt(latest.temperature, 1) : '—'}
-                unit="°C"
-                tone="dry"
-                loading={device.isLoading}
-              />
-              <SensorCard
-                icon={<Waves size={20} strokeWidth={2.2} />}
-                label="Kelembapan udara"
-                value={latest ? fmt(latest.humidity) : '—'}
-                unit="%"
-                tone="water"
-                loading={device.isLoading}
-              />
+              <div className="sensor-pair">
+                <SensorCard
+                  icon={<Thermometer size={20} strokeWidth={2.2} />}
+                  label="Suhu udara"
+                  value={latest ? fmt(latest.temperature, 1) : '—'}
+                  unit="°C"
+                  tone="dry"
+                  loading={device.isLoading}
+                />
+                <SensorCard
+                  icon={<Waves size={20} strokeWidth={2.2} />}
+                  label="Kelembapan udara"
+                  value={latest ? fmt(latest.humidity) : '—'}
+                  unit="%"
+                  tone="water"
+                  loading={device.isLoading}
+                />
+              </div>
               <div className="island-shell panel-pad pump-card">
+                <p className="section-kicker">Kontrol</p>
                 <PumpToggle
                   pumpStatus={data?.pump_status ?? 'OFF'}
                   online={data?.online ?? false}
@@ -295,8 +295,6 @@ function DashboardPage() {
               </div>
             )}
           </section>
-        </>
-      )}
     </main>
   )
 }

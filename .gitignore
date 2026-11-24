@@ -4,7 +4,10 @@ dist
 dist-ssr
 *.local
 .env
+.env.online.backup
+.env.backup
 .env-backup
+.dev.vars
 .nitro
 .tanstack
 .wrangler

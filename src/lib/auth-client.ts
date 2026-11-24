@@ -1,5 +1,5 @@
 import { createAuthClient } from 'better-auth/react'
-import { inferAdditionalFields } from 'better-auth/client/plugins'
+import { inferAdditionalFields, usernameClient } from 'better-auth/client/plugins'
 import { env } from '../env.js'
 
 // Field role ditambahkan di backend lewat user.additionalFields —
@@ -7,6 +7,7 @@ import { env } from '../env.js'
 export const authClient = createAuthClient({
   baseURL: env.VITE_API_URL,
   plugins: [
+    usernameClient(),
     inferAdditionalFields({
       user: { role: { type: 'string', defaultValue: 'user', input: false } },
     }),

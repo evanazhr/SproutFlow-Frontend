@@ -68,11 +68,9 @@ export default function Header() {
             <Link to="/history" className="nav-link" activeProps={{ className: 'nav-link is-active' }}>
               Riwayat
             </Link>
-            {isAdmin ? (
-              <Link to="/settings" className="nav-link" activeProps={{ className: 'nav-link is-active' }}>
-                Pengaturan
-              </Link>
-            ) : null}
+            <Link to="/settings" className="nav-link" activeProps={{ className: 'nav-link is-active' }}>
+              Pengaturan
+            </Link>
           </div>
         ) : null}
 

@@ -13,7 +13,6 @@ export const Route = createFileRoute('/settings')({
   beforeLoad: async () => {
     const session = await getSessionSafe()
     if (!session?.user) throw redirect({ to: '/login' })
-    if (session.user.role !== 'admin') throw redirect({ to: '/dashboard' })
   },
   component: SettingsPage,
 })

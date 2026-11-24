@@ -10,7 +10,13 @@ import { cloudflare } from '@cloudflare/vite-plugin'
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   server: {
-    allowedHosts: ['iot.evanazhar.my.id'],
+    host: true,
+    port: 3000,
+    allowedHosts: ['dash.evanazhar.my.id'],
+  },
+  preview: {
+    host: true,
+    port: 4173,
   },
   plugins: [
     devtools(),

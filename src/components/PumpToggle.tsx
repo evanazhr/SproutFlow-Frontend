@@ -6,7 +6,7 @@ import type { PumpCommand, PumpMode } from '../lib/api'
 export default function PumpToggle({
   pumpStatus,
   online,
-  isAdmin,
+  isAdmin: _isAdmin,
   pumpMode,
   pendingCommand,
   onSend,
@@ -24,7 +24,7 @@ export default function PumpToggle({
   const auto = pumpMode === 'auto'
 
   const openConfirm = (command: PumpCommand) => {
-    if (pending || !isAdmin || auto) return
+    if (pending || auto) return
     setConfirming(command)
   }
 
@@ -60,76 +60,68 @@ export default function PumpToggle({
         </span>
       </header>
 
-      {isAdmin ? (
-        <>
-          <div className="pump-control">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={pumpStatus === 'ON'}
-              aria-label={`${pumpStatus === 'ON' ? 'Matikan' : 'Nyalakan'} pompa air`}
-              className={`pump-switch ${on === 'ON' ? 'is-on' : ''}`}
-              disabled={pending || confirming !== null || auto}
-              onClick={() => openConfirm(pumpStatus === 'ON' ? 'OFF' : 'ON')}
-            >
-              <span className="pump-knob" aria-hidden="true">
-                {!pending && on === 'ON' ? 'ON' : ''}
-              </span>
-            </button>
-            <p className="pump-hint">
-              {auto
-                ? 'Otomatis: menyala saat kelembapan di bawah setpoint, mati saat tercapai. Ubah di Pengaturan.'
-                : pumpStatus === 'ON'
-                  ? 'Sedang menyala — klik untuk mematikan.'
-                  : 'Klik untuk menyirami.'}
-            </p>
-          </div>
-
-          {confirming
-            ? createPortal(
-                <div
-                  className="dialog-overlay"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby="pump-confirm-title"
-                  onClick={(e) => {
-                    if (e.target === e.currentTarget) setConfirming(null)
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Escape') setConfirming(null)
-                  }}
-                >
-                  <div className="dialog-card">
-                    <h2 id="pump-confirm-title" className="dialog-title">
-                      {commandLabel}?
-                    </h2>
-                    <p className="dialog-desc">
-                      Perintah dikirim ke perangkat lewat server, bukan langsung menyala. Status
-                      pompa berubah setelah perangkat mengonfirmasi.
-                    </p>
-                    <div className="dialog-actions">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={() => setConfirming(null)}
-                      >
-                        Batal
-                      </button>
-                      <button type="button" className="btn btn-primary" onClick={submitConfirm}>
-                        Ya, kirim
-                      </button>
-                    </div>
-                  </div>
-                </div>,
-                document.body,
-              )
-            : null}
-        </>
-      ) : (
-        <p className="pump-readonly">
-          Panel ini hanya untuk dipantau. Hanya admin yang dapat mengontrol pompa.
+      <div className="pump-control">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={pumpStatus === 'ON'}
+          aria-label={`${pumpStatus === 'ON' ? 'Matikan' : 'Nyalakan'} pompa air`}
+          className={`pump-switch ${on === 'ON' ? 'is-on' : ''}`}
+          disabled={pending || confirming !== null || auto}
+          onClick={() => openConfirm(pumpStatus === 'ON' ? 'OFF' : 'ON')}
+        >
+          <span className="pump-knob" aria-hidden="true">
+            {!pending && on === 'ON' ? 'ON' : ''}
+          </span>
+        </button>
+        <p className="pump-hint">
+          {auto
+            ? 'Otomatis: menyala saat kelembapan di bawah setpoint, mati saat tercapai. Ubah di Pengaturan.'
+            : pumpStatus === 'ON'
+              ? 'Sedang menyala — klik untuk mematikan.'
+              : 'Klik untuk menyirami.'}
         </p>
-      )}
+      </div>
+
+      {confirming
+        ? createPortal(
+            <div
+              className="dialog-overlay"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="pump-confirm-title"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setConfirming(null)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setConfirming(null)
+              }}
+            >
+              <div className="dialog-card">
+                <h2 id="pump-confirm-title" className="dialog-title">
+                  {commandLabel}?
+                </h2>
+                <p className="dialog-desc">
+                  Perintah dikirim ke perangkat lewat server, bukan langsung menyala. Status
+                  pompa berubah setelah perangkat mengonfirmasi.
+                </p>
+                <div className="dialog-actions">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setConfirming(null)}
+                  >
+                    Batal
+                  </button>
+                  <button type="button" className="btn btn-primary" onClick={submitConfirm}>
+                    Ya, kirim
+                  </button>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </section>
   )
 }
