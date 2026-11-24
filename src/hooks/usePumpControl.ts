@@ -1,26 +1,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useEffect, useState } from 'react'
-import { ApiError, api, type PumpCommand } from '../lib/api'
+import { useCallback } from 'react'
+import { ApiError, api } from '../lib/api'
+import type { PumpCommand } from '../lib/api'
+import { publishPumpStatus } from '../lib/pumpLive'
 import { toast } from '../lib/toast'
-import { useDevice } from './useDevice'
 
 /**
- * Kirim perintah pompa dan tunggu konfirmasi lewat `pump_status` (MQTT).
- * Tanpa konfirmasi dalam 10 detik → toast error.
+ * Kirim perintah pompa tanpa menunggu konfirmasi perangkat.
+ * Status UI diperbarui optimistik seketika, lalu dikoreksi oleh pump/status MQTT.
  */
 export function usePumpControl(deviceId: string) {
   const queryClient = useQueryClient()
-  const device = useDevice(deviceId)
-  const pumpStatus = device.data?.pump_status
-  const [pendingCommand, setPendingCommand] = useState<PumpCommand | null>(null)
 
   const mutation = useMutation({
     mutationFn: (command: PumpCommand) => api.pump(deviceId, command),
-    onSuccess: () => {
+    onSuccess: (_res, command) => {
       queryClient.invalidateQueries({ queryKey: ['pump-logs', deviceId] })
+      toast.success(
+        command === 'ON' ? 'Pompa menyala' : 'Pompa dimatikan',
+        'Perintah berhasil dikirim ke perangkat.',
+      )
     },
     onError: (error) => {
-      setPendingCommand(null)
       if (error instanceof ApiError) {
         if (error.code === 'FORBIDDEN') {
           toast.error('Anda tidak memiliki izin', 'Kontrol pompa hanya untuk admin.')
@@ -37,40 +38,12 @@ export function usePumpControl(deviceId: string) {
 
   const send = useCallback(
     (command: PumpCommand) => {
-      if (pendingCommand) return
-      setPendingCommand(command)
+      // Tampilkan hasil lebih dulu; MQTT akan menyelaraskan dengan kondisi nyata.
+      publishPumpStatus(deviceId, command, Math.floor(Date.now() / 1000))
       mutation.mutate(command)
     },
-    [pendingCommand, mutation],
+    [deviceId, mutation],
   )
 
-  // Konfirmasi diterima: pump_status berubah sesuai perintah
-  useEffect(() => {
-    if (pendingCommand && pumpStatus === pendingCommand) {
-      setPendingCommand(null)
-      toast.success(
-        pendingCommand === 'ON' ? 'Pompa menyala' : 'Pompa dimatikan',
-        'Perangkat mengonfirmasi status pompa.',
-      )
-    }
-  }, [pendingCommand, pumpStatus])
-
-  // Watchdog 10 detik di sisi UI
-  useEffect(() => {
-    if (!pendingCommand) return
-    const timer = window.setTimeout(() => {
-      setPendingCommand((current) => {
-        if (current) {
-          toast.error(
-            'Perangkat tidak merespons',
-            `Perintah ${current} tidak dikonfirmasi dalam 10 detik.`,
-          )
-        }
-        return null
-      })
-    }, 10_000)
-    return () => window.clearTimeout(timer)
-  }, [pendingCommand])
-
-  return { pendingCommand, send, isSending: mutation.isPending }
+  return { send, isSending: mutation.isPending }
 }

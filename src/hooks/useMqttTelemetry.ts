@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import type { DeviceDetail, Envelope } from '../lib/api'
 import { connectMqtt, type MqttStatus } from '../lib/mqtt'
+import { publishPumpStatus } from '../lib/pumpLive'
 
 /**
  * Satu koneksi MQTT singleton per aplikasi; pesan ditulis ke cache
@@ -47,6 +48,7 @@ export function useMqttTelemetry(deviceId: string) {
             break
           }
           case 'pump_status':
+            publishPumpStatus(deviceId, message.pump_status, message.ts)
             queryClient.setQueryData<Envelope<DeviceDetail>>(
               ['device', deviceId],
               (prev) =>
@@ -55,7 +57,15 @@ export function useMqttTelemetry(deviceId: string) {
                       ...prev,
                       data: { ...prev.data, online: true, pump_status: message.pump_status },
                     }
-                  : prev,
+                  : {
+                      data: {
+                        id: deviceId,
+                        name: deviceId,
+                        online: true,
+                        pump_status: message.pump_status,
+                        latest: null,
+                      },
+                    },
             )
             setLastUpdated(new Date())
             break

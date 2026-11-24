@@ -4,6 +4,8 @@ import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import { authClient } from '../lib/auth-client'
 import { disconnectMqtt } from '../lib/mqtt'
+import { clearPumpLiveState } from '../lib/pumpLive'
+import { env } from '../env'
 import { useAuth } from '../hooks/useAuth'
 
 function BrandMark() {
@@ -27,7 +29,7 @@ function BrandMark() {
 }
 
 export default function Header() {
-  const { user, isAdmin, isPending } = useAuth()
+  const { user, isPending } = useAuth()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [signingOut, setSigningOut] = useState(false)
@@ -38,6 +40,7 @@ export default function Header() {
       await authClient.signOut()
     } finally {
       disconnectMqtt()
+      clearPumpLiveState(env.VITE_DEVICE_ID)
       queryClient.clear()
       await navigate({ to: '/login' })
       setSigningOut(false)

@@ -20,7 +20,9 @@ import { useDevice } from '../hooks/useDevice'
 import { useMqttTelemetry } from '../hooks/useMqttTelemetry'
 import { usePumpControl } from '../hooks/usePumpControl'
 import { api } from '../lib/api'
+import type { PumpCommand } from '../lib/api'
 import { getSessionSafe } from '../lib/auth-client'
+import { usePumpLive } from '../lib/pumpLive'
 import { env } from '../env'
 
 export const Route = createFileRoute('/dashboard')({
@@ -52,7 +54,8 @@ function DashboardPage() {
   const { isAdmin } = useAuth()
   const device = useDevice(deviceId)
   const { status, lastUpdated } = useMqttTelemetry(deviceId)
-  const { pendingCommand, send } = usePumpControl(deviceId)
+  const livePump = usePumpLive(deviceId)
+  const { send } = usePumpControl(deviceId)
   const [range, setRange] = useState<Range>('1h')
 
   // Ambang untuk warna gauge; settings hanya bisa diakses admin → fallback default
@@ -97,6 +100,8 @@ function DashboardPage() {
   const data = device.data
   const latest = data?.latest ?? null
   const offline = data ? !data.online : true
+  // Perubahan status langsung tampil, tidak menunggu ack atau refetch REST.
+  const pumpStatus: PumpCommand = livePump?.status ?? data?.pump_status ?? 'OFF'
   const deviceError = device.isError ? (device.error instanceof Error ? device.error.message : 'Terjadi kesalahan.') : null
 
   return (
@@ -161,11 +166,10 @@ function DashboardPage() {
               <div className="island-shell panel-pad pump-card">
                 <p className="section-kicker">Kontrol</p>
                 <PumpToggle
-                  pumpStatus={data?.pump_status ?? 'OFF'}
+                  pumpStatus={pumpStatus}
                   online={data?.online ?? false}
                   isAdmin={isAdmin}
                   pumpMode={pumpMode}
-                  pendingCommand={pendingCommand}
                   onSend={send}
                 />
               </div>

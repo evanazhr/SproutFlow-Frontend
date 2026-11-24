@@ -8,23 +8,20 @@ export default function PumpToggle({
   online,
   isAdmin: _isAdmin,
   pumpMode,
-  pendingCommand,
   onSend,
 }: {
   pumpStatus: PumpCommand
   online: boolean
   isAdmin: boolean
   pumpMode: PumpMode
-  pendingCommand: PumpCommand | null
   onSend: (command: PumpCommand) => void
 }) {
   const [confirming, setConfirming] = useState<PumpCommand | null>(null)
-  const pending = pendingCommand !== null
-  const on = pendingCommand ?? pumpStatus
+  const on = pumpStatus
   const auto = pumpMode === 'auto'
 
   const openConfirm = (command: PumpCommand) => {
-    if (pending || auto) return
+    if (auto) return
     setConfirming(command)
   }
 
@@ -45,13 +42,11 @@ export default function PumpToggle({
         <div>
           <p className="pump-title">Pompa air</p>
           <p className="pump-sub">
-            {pending
-              ? `Mengirim perintah ${pendingCommand}… menunggu konfirmasi perangkat`
-              : auto
-                ? 'Mode otomatis — dikendalikan sesuai setpoint'
-                : online
-                  ? 'Perangkat siap menerima perintah'
-                  : 'Perangkat terdeteksi offline'}
+            {auto
+              ? 'Mode otomatis — dikendalikan sesuai setpoint'
+              : online
+                ? 'Perangkat siap menerima perintah'
+                : 'Perangkat terdeteksi offline'}
           </p>
         </div>
         <span className={`badge badge-${on === 'ON' ? 'on' : 'off'}`}>
@@ -67,11 +62,11 @@ export default function PumpToggle({
           aria-checked={pumpStatus === 'ON'}
           aria-label={`${pumpStatus === 'ON' ? 'Matikan' : 'Nyalakan'} pompa air`}
           className={`pump-switch ${on === 'ON' ? 'is-on' : ''}`}
-          disabled={pending || confirming !== null || auto}
+          disabled={confirming !== null || auto}
           onClick={() => openConfirm(pumpStatus === 'ON' ? 'OFF' : 'ON')}
         >
           <span className="pump-knob" aria-hidden="true">
-            {!pending && on === 'ON' ? 'ON' : ''}
+            {on === 'ON' ? 'ON' : ''}
           </span>
         </button>
         <p className="pump-hint">
@@ -102,8 +97,8 @@ export default function PumpToggle({
                   {commandLabel}?
                 </h2>
                 <p className="dialog-desc">
-                  Perintah dikirim ke perangkat lewat server, bukan langsung menyala. Status
-                  pompa berubah setelah perangkat mengonfirmasi.
+                  Perintah dikirim ke perangkat lewat server. Status pompa langsung diperbarui
+                  di dashboard.
                 </p>
                 <div className="dialog-actions">
                   <button
