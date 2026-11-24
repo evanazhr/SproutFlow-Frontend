@@ -43,6 +43,7 @@ export default function MoistureGauge({
   const thrTick = polar(180 - (threshold / 100) * 180, R)
   const thrTickIn = polar(180 - (threshold / 100) * 180, R - 20)
   const wetTick = polar(180 - 0.8 * 180, R)
+  const needleEnd = shown === null ? null : polar(180 - (shown / 100) * 180, R - 24)
 
   return (
     <figure
@@ -67,6 +68,33 @@ export default function MoistureGauge({
           stroke={color}
           style={{ strokeDasharray: `${dash} ${ARC_LEN + 10}` }}
         />
+        {/* skala analog */}
+        {Array.from({ length: 11 }, (_, i) => {
+          const angle = 180 - i * 18
+          const from = polar(angle, R - 14)
+          const to = polar(angle, R + 2)
+          return (
+            <line
+              key={`tick-${i}`}
+              x1={from.x}
+              y1={from.y}
+              x2={to.x}
+              y2={to.y}
+              className="gauge-scale"
+            />
+          )
+        })}
+        {/* jarum dan as kuningan */}
+        {needleEnd ? (
+          <line
+            x1={CX}
+            y1={CY}
+            x2={needleEnd.x}
+            y2={needleEnd.y}
+            className="gauge-needle"
+          />
+        ) : null}
+        <circle cx={CX} cy={CY} r="6" className="gauge-hub" />
         {/* penanda ambang (kering) */}
         <line
           x1={thrTickIn.x}
