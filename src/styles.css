@@ -1,5 +1,4 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -1833,113 +1832,176 @@ a {
 
 
 
+
 /* ==========================================================================
-   MODERN LIGHT / DARK — calm white & green instrument UI
+   DESIGN.md — BRUTALIST WEB
+   Courier New, sharp edges, thick borders, exposed structure, high contrast.
    ========================================================================== */
 :root {
-  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
-  --sea-ink: #173a2c;
-  --sea-ink-soft: #60796b;
-  --lagoon: #43a98b;
-  --lagoon-deep: #218266;
-  --palm: #2f8a62;
-  --leaf: #45a877;
-  --leaf-tint: rgba(69,168,119,.14);
-  --water: #4d9fc2;
-  --water-tint: rgba(77,159,194,.14);
-  --dry: #c08a4b;
-  --dry-tint: rgba(192,138,75,.14);
-  --alert: #c05b4a;
-  --alert-tint: rgba(192,91,74,.12);
-  --sand: #eef6f0;
-  --foam: #f7fbf8;
-  --bg-base: #eef6f0;
-  --header-bg: rgba(250,253,251,.9);
-  --chip-bg: rgba(255,255,255,.86);
-  --chip-line: rgba(23,58,44,.12);
-  --surface: rgba(255,255,255,.86);
-  --surface-strong: rgba(255,255,255,.96);
-  --line: rgba(23,58,44,.12);
-  --inset-glint: rgba(255,255,255,.9);
-  --kicker: #2f8a62;
-  --hero-a: rgba(69,168,119,.16);
-  --hero-b: rgba(77,159,194,.12);
+  --font-sans: "Courier New", Courier, monospace;
+  --font: "Courier New", Courier, monospace;
+  --display: "Courier New", Courier, monospace;
+  --primary: #141414;
+  --secondary: #ffffff;
+  --neutral: #2547d0;
+  --warning: #d23b32;
+  --highlight: #d6c400;
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
+  --bg-base: #f2f2f2;
+  --sand: #ffffff;
+  --foam: #f2f2f2;
+  --header-bg: #ffffff;
+  --chip-bg: #ffffff;
+  --chip-line: #141414;
+  --sea-ink: #141414;
+  --sea-ink-soft: #5e5e5e;
+  --line: #141414;
+  --grid-line: rgba(20,20,20,.06);
+  --kicker: #2547d0;
+  --leaf: #2547d0;
+  --leaf-tint: rgba(37,71,208,.12);
+  --water: #5e5e5e;
+  --water-tint: rgba(94,94,94,.14);
+  --dry: #d23b32;
+  --dry-tint: rgba(210,59,50,.12);
+  --alert: #d23b32;
+  --alert-tint: rgba(210,59,50,.12);
+  --inset-glint: transparent;
+  --hero-a: transparent;
+  --hero-b: transparent;
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --sea-ink: #dceee1;
-  --sea-ink-soft: #9bb6a5;
-  --lagoon: #6cc9a9;
-  --lagoon-deep: #8ad9bd;
-  --palm: #79c99b;
-  --leaf: #79c99b;
-  --leaf-tint: rgba(121,201,155,.14);
-  --water: #82c3db;
-  --water-tint: rgba(130,195,219,.13);
-  --dry: #d9a565;
-  --dry-tint: rgba(217,165,101,.13);
-  --alert: #e18370;
-  --alert-tint: rgba(225,131,112,.13);
-  --sand: #142b20;
-  --foam: #10241b;
-  --bg-base: #0f2118;
-  --header-bg: rgba(16,36,27,.92);
-  --chip-bg: rgba(30,55,42,.86);
-  --chip-line: rgba(180,225,198,.18);
-  --surface: rgba(30,55,42,.82);
-  --surface-strong: rgba(36,64,49,.94);
-  --line: rgba(180,225,198,.16);
-  --inset-glint: rgba(205,240,218,.1);
-  --kicker: #9ee0bb;
-  --hero-a: rgba(121,201,155,.12);
-  --hero-b: rgba(130,195,219,.1);
+  --primary: #f2f2f2;
+  --secondary: #141414;
+  --neutral: #7690ff;
+  --warning: #ff6b60;
+  --highlight: #f0df4d;
+  --surface: #141414;
+  --surface-strong: #141414;
+  --bg-base: #141414;
+  --sand: #141414;
+  --foam: #141414;
+  --header-bg: #141414;
+  --chip-bg: #141414;
+  --chip-line: #f2f2f2;
+  --sea-ink: #f2f2f2;
+  --sea-ink-soft: #bdbdbd;
+  --line: #f2f2f2;
+  --grid-line: rgba(255,255,255,.06);
+  --kicker: #7690ff;
+  --leaf: #7690ff;
+  --leaf-tint: rgba(118,144,255,.14);
+  --water: #bdbdbd;
+  --water-tint: rgba(189,189,189,.14);
+  --dry: #ff6b60;
+  --dry-tint: rgba(255,107,96,.14);
+  --alert: #ff6b60;
+  --alert-tint: rgba(255,107,96,.14);
   color-scheme: dark;
 }
+
+*, *::before, *::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 body {
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--sea-ink);
   background-color: var(--bg-base);
   background-image:
-    radial-gradient(980px 560px at -6% -10%, var(--hero-a), transparent 60%),
-    radial-gradient(880px 520px at 108% -8%, var(--hero-b), transparent 62%),
-    linear-gradient(165deg, var(--foam), var(--bg-base));
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
+button, input, p, h1, h2, h3, span, a { font-family: var(--font); }
+.page-wrap { max-width: 1280px; padding-inline: 1.5rem; }
+.brand-link { border-left: 8px solid var(--neutral); padding-left: 10px; }
+.brand-mark, .pump-icon { background: var(--neutral); color: #fff; border: 2px solid var(--line); }
+
 .display-title, .brand-name, .page-title, .panel-title, .pump-title,
 .status-device-name, .dialog-title, .login-title, .section-kicker,
-.island-kicker, .field-label, .nav-link, .tab {
-  font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+.island-kicker, .field-label, .nav-link, .tab, .gauge-value, .sensor-value {
+  font-family: var(--display);
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
-.island-shell, .dialog-card, .sensor-card, .table-shell {
-  border-radius: 20px;
-  box-shadow: 0 1px 0 var(--inset-glint) inset, 0 18px 40px rgba(35,100,74,.09), 0 4px 14px rgba(34,84,70,.05);
-}
-.btn-primary {
-  background: linear-gradient(180deg, #3f9d71, #2b7f5a);
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(43,127,90,.22);
-}
-.btn-primary:hover:not(:disabled) { background: linear-gradient(180deg, #49aa7b, #318a63); }
-:root[data-theme="dark"] .btn-primary {
-  background: linear-gradient(180deg, #5bbd8d, #3e9c71);
-  color: #0e2419;
-}
+.page-title { font-size: clamp(2.25rem, 5vw, 3.25rem); }
+.section-kicker, .island-kicker { color: var(--kicker); font-size: 0.875rem; text-transform: none; }
 
-.mode-home {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
+.island-shell, .dialog-card, .sensor-card, .gauge, .table-shell, .chart-box,
+.settings-panel, .error-panel, .login-shell > div, .status-strip, .toast-item {
+  border: 2px solid var(--line) !important;
+  background: var(--surface) !important;
+  color: var(--sea-ink) !important;
+  backdrop-filter: none;
 }
-.mode-home-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--sea-ink);
+.btn, .tab, .tab-switch, .login-submit, .login-google-btn, .pump-switch,
+.field-input, .demo-input, .demo-select, .demo-textarea {
+  border: 2px solid var(--line) !important;
+  background: var(--surface) !important;
+  color: var(--sea-ink) !important;
+  font-weight: 700;
+  transition: background 200ms ease-out, color 200ms ease-out;
 }
-.mode-home-help {
-  margin: 0.5rem 0 0;
-  font-size: 0.76rem;
-  line-height: 1.45;
-  color: var(--sea-ink-soft);
+.btn:hover:not(:disabled), .tab:hover, .tab-switch:hover {
+  background: var(--neutral) !important;
+  color: #fff !important;
+  transform: none;
 }
+.btn:active:not(:disabled), .tab:active { transform: translateY(-1px); }
+.btn-primary, .tab.is-active, .pump-switch.is-on {
+  background: var(--neutral) !important;
+  color: #fff !important;
+  border-color: var(--neutral) !important;
+}
+.btn-primary:hover:not(:disabled) { background: var(--primary) !important; color: var(--secondary) !important; }
+.nav-link { border: 2px solid transparent; color: var(--sea-ink); }
+.nav-link:hover, .nav-link.is-active {
+  color: var(--neutral);
+  background: transparent;
+  border-color: var(--neutral);
+}
+.badge, .zone-chip {
+  border: 2px solid var(--line) !important;
+  background: var(--surface) !important;
+  color: var(--sea-ink) !important;
+  font-weight: 700;
+}
+.badge-on { background: var(--neutral) !important; color: #fff !important; border-color: var(--neutral) !important; }
+.badge-off { background: var(--warning) !important; color: #fff !important; border-color: var(--warning) !important; }
+.chip-kering { background: var(--warning) !important; color: #fff !important; }
+.chip-ideal { background: var(--neutral) !important; color: #fff !important; }
+.chip-basah { background: var(--water) !important; color: #fff !important; }
+
+.gauge-track { stroke: var(--sea-ink); stroke-width: 2; }
+.gauge-fill { stroke-width: 10; }
+.gauge-scale { stroke: var(--sea-ink-soft); }
+.gauge-needle { stroke: var(--warning); stroke-width: 4; stroke-linecap: butt; filter: none; }
+.gauge-hub { fill: var(--sea-ink); stroke: none; }
+.gauge-value { font-size: 2.5rem; color: var(--sea-ink); text-shadow: none; }
+.gauge-unit { color: var(--sea-ink-soft); }
+.gauge-caption { font-family: var(--font); color: var(--sea-ink-soft); }
+.gauge-threshold { border: 2px solid var(--line); background: var(--surface); color: var(--sea-ink); }
+.sensor-label, .sensor-unit, .sensor-detail { color: var(--sea-ink-soft); }
+.sensor-value { color: var(--sea-ink); text-shadow: none; font-size: 1.7rem; }
+.sensor-icon { background: var(--surface); border: 2px solid var(--line); color: var(--neutral); }
+.pump-knob {
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: transparent;
+  box-shadow: none;
+}
+.pump-switch.is-on .pump-knob { color: #fff; }
+.toast-error { background: var(--warning) !important; color: #fff !important; }
+.toast-success { background: var(--neutral) !important; color: #fff !important; }
+:where(button, input, a):focus-visible {
+  outline: 2px solid var(--neutral);
+  outline-offset: 2px;
+}
+@keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.rise-in { animation: riseIn 420ms ease-out both; }
