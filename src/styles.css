@@ -1,5 +1,5 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -1832,275 +1832,114 @@ a {
 }
 
 
+
 /* ==========================================================================
-   SKIN: GREENHOUSE INSTRUMENT PANEL
-   Enamel faceplate, brushed olive steel, brass hardware, inset glass readout.
+   MODERN LIGHT / DARK — calm white & green instrument UI
    ========================================================================== */
-:root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
-  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
-  --font: "IBM Plex Sans", system-ui, sans-serif;
-  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
-  --enamel: #e9e0c8;
-  --enamel-low: #cfc2a2;
-  --olive: #23382c;
-  --olive-deep: #132219;
-  --brass: #b18f52;
-  --brass-dark: #6f5a31;
-  --glass: #101f18;
-  --ink: #243128;
-  --ink-soft: #63705f;
-  --line: #a99b7b;
-  --chip-bg: #eee5cf;
-  --chip-line: #aa9b7a;
-  --header-bg: #1a2d22;
-  --surface: var(--enamel);
-  --surface-strong: var(--enamel);
-  --sea-ink: var(--ink);
-  --sea-ink-soft: var(--ink-soft);
-  --leaf: #4b805a;
-  --water: #4a86a0;
-  --dry: #ac7842;
-  --alert: #a34e3d;
-  --leaf-tint: rgba(75,128,90,.16);
-  --water-tint: rgba(74,134,160,.16);
-  --dry-tint: rgba(172,120,66,.16);
-  --alert-tint: rgba(163,78,61,.14);
-  --inset-glint: rgba(255,252,238,.8);
-  --hero-a: rgba(177,143,82,.16);
-  --hero-b: rgba(110,150,110,.1);
+:root {
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --sea-ink: #173a2c;
+  --sea-ink-soft: #60796b;
+  --lagoon: #43a98b;
+  --lagoon-deep: #218266;
+  --palm: #2f8a62;
+  --leaf: #45a877;
+  --leaf-tint: rgba(69,168,119,.14);
+  --water: #4d9fc2;
+  --water-tint: rgba(77,159,194,.14);
+  --dry: #c08a4b;
+  --dry-tint: rgba(192,138,75,.14);
+  --alert: #c05b4a;
+  --alert-tint: rgba(192,91,74,.12);
+  --sand: #eef6f0;
+  --foam: #f7fbf8;
+  --bg-base: #eef6f0;
+  --header-bg: rgba(250,253,251,.9);
+  --chip-bg: rgba(255,255,255,.86);
+  --chip-line: rgba(23,58,44,.12);
+  --surface: rgba(255,255,255,.86);
+  --surface-strong: rgba(255,255,255,.96);
+  --line: rgba(23,58,44,.12);
+  --inset-glint: rgba(255,255,255,.9);
+  --kicker: #2f8a62;
+  --hero-a: rgba(69,168,119,.16);
+  --hero-b: rgba(77,159,194,.12);
+  color-scheme: light;
 }
-
+:root[data-theme="dark"] {
+  --sea-ink: #dceee1;
+  --sea-ink-soft: #9bb6a5;
+  --lagoon: #6cc9a9;
+  --lagoon-deep: #8ad9bd;
+  --palm: #79c99b;
+  --leaf: #79c99b;
+  --leaf-tint: rgba(121,201,155,.14);
+  --water: #82c3db;
+  --water-tint: rgba(130,195,219,.13);
+  --dry: #d9a565;
+  --dry-tint: rgba(217,165,101,.13);
+  --alert: #e18370;
+  --alert-tint: rgba(225,131,112,.13);
+  --sand: #142b20;
+  --foam: #10241b;
+  --bg-base: #0f2118;
+  --header-bg: rgba(16,36,27,.92);
+  --chip-bg: rgba(30,55,42,.86);
+  --chip-line: rgba(180,225,198,.18);
+  --surface: rgba(30,55,42,.82);
+  --surface-strong: rgba(36,64,49,.94);
+  --line: rgba(180,225,198,.16);
+  --inset-glint: rgba(205,240,218,.1);
+  --kicker: #9ee0bb;
+  --hero-a: rgba(121,201,155,.12);
+  --hero-b: rgba(130,195,219,.1);
+  color-scheme: dark;
+}
 body {
-  color: var(--ink);
-  background-color: var(--olive-deep);
+  background-color: var(--bg-base);
   background-image:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 5px),
-    radial-gradient(900px 520px at 12% -12%, rgba(177,143,82,.18), transparent 62%),
-    radial-gradient(700px 420px at 108% 0%, rgba(110,150,110,.12), transparent 60%),
-    linear-gradient(165deg, #24392c 0%, #16271d 58%, #101d16 100%);
+    radial-gradient(980px 560px at -6% -10%, var(--hero-a), transparent 60%),
+    radial-gradient(880px 520px at 108% -8%, var(--hero-b), transparent 62%),
+    linear-gradient(165deg, var(--foam), var(--bg-base));
 }
-
-.brand-name, .display-title, .page-title, .panel-title, .pump-title,
-.status-device-name, .gauge-caption, .dialog-title, .login-title, .section-kicker,
-.island-kicker, .field-label, .tab {
-  font-family: var(--display);
-  font-weight: 600;
-  letter-spacing: 0.005em;
+.display-title, .brand-name, .page-title, .panel-title, .pump-title,
+.status-device-name, .dialog-title, .login-title, .section-kicker,
+.island-kicker, .field-label, .nav-link, .tab {
+  font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
   font-style: normal;
-}
-.brand-name { font-size: 1.3rem; }
-.page-title { font-size: clamp(2rem, 5vw, 2.8rem); }
-.section-kicker, .island-kicker { color: #5d6b58; font-size: 0.82rem; }
-.section-kicker::after, .island-kicker::after {
-  content: "";
-  display: block;
-  width: 34px;
-  height: 2px;
-  margin-top: 6px;
-  background: linear-gradient(90deg, var(--brass), transparent);
-}
-
-/* Faceplates with screws */
-.island-shell, .dialog-card, .login-shell > div, .table-shell {
-  position: relative;
-  border: 1px solid #b7a989;
-  border-radius: 18px;
-  background: linear-gradient(157deg, #f2ead6 0%, var(--enamel) 48%, var(--enamel-low) 100%);
-  box-shadow: inset 0 1px 0 rgba(255,252,238,.85), inset 0 -2px 0 rgba(94,78,48,.2), 0 3px 0 #a19373, 0 14px 30px rgba(0,0,0,.34);
-  backdrop-filter: none;
-}
-.island-shell::before, .island-shell::after,
-.dialog-card::before, .dialog-card::after {
-  content: "";
-  position: absolute;
-  top: 11px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background:
-    linear-gradient(90deg, transparent 44%, rgba(35,32,22,.55) 45% 55%, transparent 56%),
-    radial-gradient(circle at 34% 28%, #f6efda, var(--brass) 58%, var(--brass-dark));
-  box-shadow: 0 1px 1px rgba(255,255,255,.7), inset 0 0 0 1px rgba(60,47,24,.35);
-  pointer-events: none;
-}
-.island-shell::before, .dialog-card::before { left: 11px; }
-.island-shell::after, .dialog-card::after { right: 11px; }
-
-.status-strip {
-  border: 1px solid #6f6245;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #1c3327, #122219);
-  box-shadow: inset 0 2px 7px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.5);
-}
-.status-device-name, .status-device-sub { color: #dcebd8; }
-.status-device-sub { color: #92aa93; }
-.nav-link {
-  color: #d8e5d3;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 0.3rem 0.65rem;
-  font-family: var(--display);
   font-weight: 600;
 }
-.nav-link::after { display: none; }
-.nav-link:hover, .nav-link.is-active {
-  color: #f6edcf;
-  background: linear-gradient(180deg, #3a563f, #27402e);
-  border-color: var(--brass-dark);
-}
-.brand-mark, .pump-icon {
-  border-radius: 9px;
-  background: linear-gradient(145deg, var(--brass), #8c7140);
-  border: 1px solid var(--brass-dark);
-  color: #fff6de;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 2px 0 #5d4a29;
-}
-
-/* Analog dial */
-.gauge {
-  padding: 0.9rem 0.75rem 0.6rem;
-  border: 1px solid #756744;
-  border-radius: 16px;
-  background: radial-gradient(ellipse at 50% 88%, #1b3528 0%, var(--glass) 72%);
-  box-shadow: inset 0 3px 12px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.55);
-}
-.gauge-track { stroke: #0a1812; stroke-width: 17; }
-.gauge-fill { stroke-width: 11; }
-.gauge-scale { stroke: #c2ad7b; stroke-width: 2; stroke-linecap: round; opacity: 0.75; }
-.gauge-needle { stroke: #e7c37c; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 1px 2px rgba(0,0,0,.7)); }
-.gauge-hub { fill: var(--brass); stroke: #6b542d; stroke-width: 2; }
-.gauge-dot { r: 4; stroke-width: 2; }
-.gauge-readout {
-  position: static;
-  transform: none;
-  text-align: center;
-  margin-top: 0.35rem;
-}
-.gauge-value {
-  display: inline-block;
-  min-width: 5ch;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid #6f6245;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #0d1f16, #152d21);
-  box-shadow: inset 0 2px 6px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.45);
-  color: #dff0d8;
-  font-family: var(--mono);
-  font-size: 2.1rem;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-shadow: 0 0 12px rgba(125,205,145,.35);
-}
-.gauge-unit { color: #8faa91; font-family: var(--mono); font-size: 1rem; }
-.gauge-caption { color: #7b8d79; font-family: var(--mono); font-size: 0.68rem; }
-.gauge-threshold { background: #eee5cf; border: 1px solid #aa9b7a; color: #4d5b49; border-radius: 6px; font-family: var(--display); }
-
-/* Sensor windows */
-.sensor-card {
-  border: 1px solid #746646;
-  border-radius: 11px;
-  background: linear-gradient(180deg, var(--glass), #193027);
-  box-shadow: inset 0 3px 8px rgba(0,0,0,.62), 0 1px 0 rgba(255,255,255,.55);
-}
-.sensor-label, .sensor-unit, .sensor-detail { color: #90a894; font-family: var(--display); font-weight: 600; }
-.sensor-value {
-  font-family: var(--mono);
-  font-size: 1.55rem;
-  font-weight: 500;
-  letter-spacing: 0;
-  color: #e2f0dd;
-  text-shadow: 0 0 12px rgba(125,205,145,.28);
-}
-.sensor-icon {
-  border-radius: 7px;
-  background: rgba(0,0,0,.22);
-  border: 1px solid rgba(177,143,82,.35);
-  color: #cbb57e;
-}
-.tone-leaf .sensor-icon, .tone-water .sensor-icon, .tone-dry .sensor-icon { background: rgba(0,0,0,.22); border-color: rgba(177,143,82,.35); color: #cbb57e; }
-
-/* Toggle: physical switch in a bezel */
-.pump-switch {
-  width: 70px;
-  height: 38px;
-  border-radius: 8px;
-  border: 1px solid #6f6245;
-  background: linear-gradient(180deg, #0d1d15, #1a3024);
-  box-shadow: inset 0 3px 8px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.55);
-}
-.pump-knob {
-  top: 3px;
-  left: 3px;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #f8f2e2, #ccbe9d);
-  border: 1px solid #9b8c6b;
-  box-shadow: inset 0 1px 0 #fffaf0, 0 3px 0 #8c7e61, 0 5px 8px rgba(0,0,0,.35);
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 600;
-  color: transparent;
-  transition: transform 180ms ease;
-}
-.pump-switch.is-on { background: linear-gradient(180deg, #2e5a3c, #1a3e29); }
-.pump-switch.is-on .pump-knob { transform: translateX(32px); color: #2f633f; }
-
-/* Raised keys, badges, dialogs */
-.btn, .tab, .tab-switch, .login-google-btn, .login-submit, .login-logo {
-  border: 1px solid #ae9f7e;
-  background: linear-gradient(180deg, #f8f2e2 0%, #e4d9bf 55%, #d5c8aa 100%);
-  color: var(--ink);
-  box-shadow: inset 0 1px 0 #fffaf0, inset 0 -2px 0 rgba(92,76,45,.22), 0 3px 0 #9a8c6d, 0 6px 12px rgba(0,0,0,.18);
-  border-radius: 9px;
-  text-shadow: 0 1px 0 rgba(255,255,255,.55);
-}
-.btn:hover:not(:disabled), .tab:hover { transform: none; filter: brightness(1.03); }
-.btn:active:not(:disabled), .tab:active {
-  transform: translateY(2px);
-  box-shadow: inset 0 2px 5px rgba(74,60,34,.3), 0 1px 0 #9a8c6d;
+.island-shell, .dialog-card, .sensor-card, .table-shell {
+  border-radius: 20px;
+  box-shadow: 0 1px 0 var(--inset-glint) inset, 0 18px 40px rgba(35,100,74,.09), 0 4px 14px rgba(34,84,70,.05);
 }
 .btn-primary {
-  background: linear-gradient(180deg, #4b805a, #2b5a3d);
-  border-color: #1c402b;
-  color: #f7f3e2;
-  text-shadow: 0 1px 1px rgba(0,0,0,.35);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -2px 0 rgba(0,0,0,.25), 0 3px 0 #173422, 0 6px 12px rgba(0,0,0,.24);
+  background: linear-gradient(180deg, #3f9d71, #2b7f5a);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(43,127,90,.22);
 }
-.btn-secondary { background: linear-gradient(180deg, #f3ecda, #dbcfb2); }
-.badge, .zone-chip {
-  background: linear-gradient(180deg, #f2ead6, #d5c8a8);
-  border: 1px solid #ab9d7d;
-  color: #4b5a48;
-  box-shadow: inset 0 1px 0 #fff8e8, 0 2px 0 #9c8f70;
-  border-radius: 6px;
-  font-family: var(--display);
+.btn-primary:hover:not(:disabled) { background: linear-gradient(180deg, #49aa7b, #318a63); }
+:root[data-theme="dark"] .btn-primary {
+  background: linear-gradient(180deg, #5bbd8d, #3e9c71);
+  color: #0e2419;
+}
+
+.mode-home {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.mode-home-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+  font-size: 0.82rem;
   font-weight: 600;
+  color: var(--sea-ink);
 }
-.badge-on { background: linear-gradient(180deg, #dbe9ce, #bfd5b0); border-color: #8ba57d; }
-.badge-off { background: linear-gradient(180deg, #efd6cf, #d9b4a9); border-color: #b98b7c; }
-.dialog-overlay { background: rgba(9,20,14,.62); backdrop-filter: blur(2px); }
-.dialog-card { border-radius: 14px; }
-.field-input, .field-input-row input, .demo-input, .demo-select, .demo-textarea {
-  border: 1px solid #746646;
-  border-radius: 8px;
-  background: linear-gradient(180deg, var(--glass), #193027);
-  color: #dbe9d8;
-  box-shadow: inset 0 3px 8px rgba(0,0,0,.62), 0 1px 0 rgba(255,255,255,.55);
-}
-.toast-item {
-  background: linear-gradient(180deg, #24392c, #15271d);
-  border: 1px solid var(--brass-dark);
-  border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 10px 24px rgba(0,0,0,.4);
-  font-family: var(--font);
-}
-.toast-success { background: linear-gradient(180deg, #2c5639, #1a3524); }
-.toast-error { background: linear-gradient(180deg, #5c332b, #3a1f1a); }
-.num, .sensor-value, .gauge-value { font-variant-numeric: tabular-nums; }
-.btn:focus-visible, .tab:focus-visible, .tab-switch:focus-visible,
-.pump-switch:focus-visible, .nav-link:focus-visible {
-  outline: 2px solid var(--brass);
-  outline-offset: 2px;
+.mode-home-help {
+  margin: 0.5rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--sea-ink-soft);
 }

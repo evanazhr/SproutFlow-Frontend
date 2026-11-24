@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Thermometer, Waves } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -19,9 +19,10 @@ import { useAuth } from '../hooks/useAuth'
 import { useDevice } from '../hooks/useDevice'
 import { useMqttTelemetry } from '../hooks/useMqttTelemetry'
 import { usePumpControl } from '../hooks/usePumpControl'
-import { api } from '../lib/api'
-import type { PumpCommand } from '../lib/api'
+import { ApiError, api } from '../lib/api'
+import type { PumpCommand, PumpMode } from '../lib/api'
 import { getSessionSafe } from '../lib/auth-client'
+import { toast } from '../lib/toast'
 import { useLiveTelemetry } from '../lib/liveTelemetry'
 import { usePumpLive } from '../lib/pumpLive'
 import { env } from '../env'
@@ -58,6 +59,7 @@ function DashboardPage() {
   const liveTelemetry = useLiveTelemetry(deviceId)
   const livePump = usePumpLive(deviceId)
   const { send } = usePumpControl(deviceId)
+  const queryClient = useQueryClient()
   const [range, setRange] = useState<Range>('1h')
 
   // Ambang untuk warna gauge; settings hanya bisa diakses admin → fallback default
@@ -69,6 +71,22 @@ function DashboardPage() {
   })
   const threshold = settings.data?.moisture_threshold ?? DEFAULT_THRESHOLD
   const pumpMode = settings.data?.pump_mode ?? 'auto'
+
+  const saveMode = useMutation({
+    mutationFn: (mode: PumpMode) => api.updatePumpMode(deviceId, mode),
+    onSuccess: (res) => {
+      queryClient.setQueryData(['settings', deviceId], res)
+      toast.success(
+        'Mode pompa diperbarui',
+        res.data.pump_mode === 'auto'
+          ? 'Pompa mengikuti kelembapan tanah.'
+          : 'Pompa dikendalikan manual.',
+      )
+    },
+    onError: (error) => {
+      if (error instanceof ApiError) toast.error('Gagal menyimpan', error.message)
+    },
+  })
 
   const activeRange = RANGES.find((r) => r.key === range) ?? RANGES[0]
   const readings = useQuery({
@@ -175,6 +193,36 @@ function DashboardPage() {
                   pumpMode={pumpMode}
                   onSend={send}
                 />
+                {isAdmin ? (
+                  <div className="mode-home">
+                    <span className="mode-home-label" id="home-mode-label">
+                      Cara kerja pompa
+                    </span>
+                    <div className="tabs" role="group" aria-labelledby="home-mode-label">
+                      <button
+                        type="button"
+                        className={`tab ${pumpMode === 'auto' ? 'is-active' : ''}`}
+                        disabled={saveMode.isPending}
+                        onClick={() => saveMode.mutate('auto')}
+                      >
+                        Otomatis
+                      </button>
+                      <button
+                        type="button"
+                        className={`tab ${pumpMode === 'manual' ? 'is-active' : ''}`}
+                        disabled={saveMode.isPending}
+                        onClick={() => saveMode.mutate('manual')}
+                      >
+                        Manual
+                      </button>
+                    </div>
+                    <p className="mode-home-help">
+                      {pumpMode === 'auto'
+                        ? 'Pompa mengikuti kelembapan tanah.'
+                        : 'Gunakan tombol di atas untuk menyiram.'}
+                    </p>
+                  </div>
+                ) : null}
               </div>
             </div>
           </section>
